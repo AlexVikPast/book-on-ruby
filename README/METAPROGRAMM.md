@@ -32,8 +32,8 @@
 ## Функциональное программирование в Ruby
 ## Манипулирование значениями переменных, удаление переменных
 ### instance_variable_get
-[Документация](https://apidock.com/ruby/Object/instance_variable_get)
-Как на говорит документация
+
+Как на говорит [документация](https://apidock.com/ruby/Object/instance_variable_get)
 
 > Возвращает значение заданной переменной экземпляра или nil, если переменная экземпляра не установлена
 
@@ -52,7 +52,7 @@ puts obj.@a ===> syntax error, unexpected instance variable
 puts obj.instance_variable_get("@a") ===> "1"
 ```
 
-Как мы видим класс без "getter method" вызывает ошибку при обращении к инстанс переменной, но "instance_variable_get" легко с данной задачей справляется.
+Как мы видим из [примера](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/instance_variable_get.rb) класс без "getter method" вызывает ошибку при обращении к инстанс переменной, но "instance_variable_get" легко с данной задачей справляется.
 
 ### instance_variable_set
 ### remove_instance_variable
