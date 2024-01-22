@@ -1,9 +1,9 @@
-class A
-  def initialize(a)
-    @a = a
+class Animal
+  def initialize(age)
+    @age = age
   end
 end
 
-obj = A.new("1")
-puts obj.@a
-puts obj.instance_variable_get("@a")
+obj = Animal.new(5)
+puts obj.age # ===> syntax error, unexpected instance variable
+puts obj.instance_variable_get("@age") # ===> 5

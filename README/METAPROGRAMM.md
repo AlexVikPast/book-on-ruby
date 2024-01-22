@@ -35,26 +35,55 @@
 
 Как на говорит [документация](https://apidock.com/ruby/Object/instance_variable_get)
 
-> Возвращает значение заданной переменной экземпляра или nil, если переменная экземпляра не установлена
+> Возвращает значение заданной переменной экземпляра или nil, если переменная экземпляра не установлена.
 
 Тут стоит добавить что значение мы получаем непосредственно по имени переменной, это может быть либо строка либо символ.
 Данный метод удобно подходит для создания "getter method".
 
 ```ruby
-class A
-  def initialize(a)
-    @a = a
+class Animal
+  def initialize(age)
+    @age = age
   end
 end
 
-obj = A.new("1")
-puts obj.@a ===> syntax error, unexpected instance variable
-puts obj.instance_variable_get("@a") ===> "1"
+obj = Animal.new(5)
+puts obj.age # ===> syntax error, unexpected instance variable
+puts obj.instance_variable_get("@age") # ===> 5
 ```
 
 Как мы видим из [примера](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/instance_variable_get.rb) класс без "getter method" вызывает ошибку при обращении к инстанс переменной, но "instance_variable_get" легко с данной задачей справляется.
 
 ### instance_variable_set
+Снова обратимся к [документации](https://apidock.com/ruby/Object/instance_variable_set)
+> Устанавливает переменную экземпляра, через ее символьное обозначение, для данного объекта, хотя строка тоже подойдет.
+
+Данный метод удобно подходит для создания "setter method".
+
+```ruby
+class Animal
+  def initialize(age)
+    @age = age
+  end
+
+  def age
+    @age
+  end
+end
+
+obj = Animal.new(10)
+puts obj.age # ===> 10
+obj.age = 15 # ===> undefined method 'age='
+
+obj.instance_variable_set("@age", 15)
+puts obj.age # ===> 15
+
+obj.instance_variable_set(:@age, 20)
+puts obj.age # ===> 20
+```
+
+Как видно из [примера](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/instance_variable_set.rb) без явного метода устанавливающего значения для инстанс переменной или "instance_variable_set" получаем ошибку.
+
 ### remove_instance_variable
 ### class_variable_get
 ### class_variable_set
