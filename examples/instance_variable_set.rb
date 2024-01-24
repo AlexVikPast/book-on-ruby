@@ -8,12 +8,12 @@ class Animal
   end
 end
 
-obj = Animal.new(10)
-puts obj.age # ===> 10
-obj.age = 15 # ===> undefined method 'age='
+animal = Animal.new(10)
+puts animal.age # ===> 10
+animal.age = 15 # ===> undefined method 'age='
 
-obj.instance_variable_set("@age", 15)
-puts obj.age # ===> 15
+animal.instance_variable_set("@age", 15)
+puts animal.age # ===> 15
 
-obj.instance_variable_set(:@age, 20)
-puts obj.age # ===> 20
+animal.instance_variable_set(:@age, 20)
+puts animal.age # ===> 20

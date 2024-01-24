@@ -47,9 +47,9 @@ class Animal
   end
 end
 
-obj = Animal.new(5)
-puts obj.age # ===> syntax error, unexpected instance variable
-puts obj.instance_variable_get("@age") # ===> 5
+animal = Animal.new(5)
+puts animal.age # ===> syntax error, unexpected instance variable
+puts animal.instance_variable_get("@age") # ===> 5
 ```
 
 Как мы видим из [примера](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/instance_variable_get.rb) класс без "getter method" вызывает ошибку при обращении к инстанс переменной, но "instance_variable_get" легко с данной задачей справляется.
@@ -71,20 +71,60 @@ class Animal
   end
 end
 
-obj = Animal.new(10)
-puts obj.age # ===> 10
-obj.age = 15 # ===> undefined method 'age='
+animal = Animal.new(10)
+puts animal.age # ===> 10
+animal.age = 15 # ===> undefined method 'age='
 
-obj.instance_variable_set("@age", 15)
-puts obj.age # ===> 15
+animal.instance_variable_set("@age", 15)
+puts animal.age # ===> 15
 
-obj.instance_variable_set(:@age, 20)
-puts obj.age # ===> 20
+animal.instance_variable_set(:@age, 20)
+puts animal.age # ===> 20
 ```
 
 Как видно из [примера](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/instance_variable_set.rb) без явного метода устанавливающего значения для инстанс переменной или "instance_variable_set" получаем ошибку.
 
 ### remove_instance_variable
+Что нам говорит [документация?](https://apidock.com/ruby/Object/remove_instance_variable)
+
+> Удаляет именованную переменную экземпляра из объекта obj, возвращая значение этой переменной.
+
+Добавим в наш базовый класс стандартные getter - setter методы.
+
+```ruby
+class Animal
+  def initialize(age)
+    @age = age
+  end
+
+  def age=(age)
+    @age = age
+  end
+
+  def age
+    @age
+  end
+
+  def remove_age
+    remove_instance_variable(:@age)
+  end
+end
+
+animal = Animal.new(5) 
+puts animal.age # ===> 5
+
+animal.age = 10
+puts animal.age # ===> 10
+
+puts animal.remove_instance_variable(:@age) # ===> 10
+puts animal.age # ===> nil
+
+animal.age = 15
+puts animal.remove_age # ===> 15
+```
+
+Как мы [видим](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/remove_instance_variable.rb) методы можно с легкостью вызывать с объекта класса или внутри класса.
+
 ### class_variable_get
 ### class_variable_set
 ### remove_class_variable

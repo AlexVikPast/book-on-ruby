@@ -4,6 +4,6 @@ class Animal
   end
 end
 
-obj = Animal.new(5)
-puts obj.age # ===> syntax error, unexpected instance variable
-puts obj.instance_variable_get("@age") # ===> 5
+animal = Animal.new(5)
+puts animal.age # ===> syntax error, unexpected instance variable
+puts animal.instance_variable_get("@age") # ===> 5
