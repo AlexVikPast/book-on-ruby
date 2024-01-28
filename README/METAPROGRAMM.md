@@ -52,7 +52,7 @@ puts animal.age # ===> syntax error, unexpected instance variable
 puts animal.instance_variable_get("@age") # ===> 5
 ```
 
-Как мы видим из [примера](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/instance_variable_get.rb) класс без "getter method" вызывает ошибку при обращении к инстанс переменной, но "instance_variable_get" легко с данной задачей справляется.
+Как мы видим из [примера](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/instance_variable_get.rb) класс без "getter method" вызывает ошибку при обращении к инстанс переменной, но "instance_variable_get" легко с данной задачей справляется.
 
 ### instance_variable_set
 Снова обратимся к [документации](https://apidock.com/ruby/Object/instance_variable_set)
@@ -82,7 +82,7 @@ animal.instance_variable_set(:@age, 20)
 puts animal.age # ===> 20
 ```
 
-Как видно из [примера](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/instance_variable_set.rb) без явного метода устанавливающего значения для инстанс переменной или "instance_variable_set" получаем ошибку.
+Как видно из [примера](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/instance_variable_set.rb) без явного метода устанавливающего значения для инстанс переменной или "instance_variable_set" получаем ошибку.
 
 ### remove_instance_variable
 Что нам говорит [документация?](https://apidock.com/ruby/Object/remove_instance_variable)
@@ -123,9 +123,53 @@ animal.age = 15
 puts animal.remove_age # ===> 15
 ```
 
-Как мы [видим](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/remove_instance_variable.rb) методы можно с легкостью вызывать с объекта класса или внутри класса.
+Как мы [видим](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/remove_instance_variable.rb) методы можно с легкостью вызывать с объекта класса или внутри класса.
 
 ### class_variable_get
+В документацию [пишут](https://apidock.com/ruby/Module/class_variable_get)
+
+> Возвращает значение заданной переменной класса (или выдает исключение NameError).
+
+Переменные класса начинаются с @@ и должны быть инициализированы до их использования в определениях методов.
+
+Ссылка на неинициализированную переменную класса вызывает ошибку. Переменные класса распределяются между потомками класса или модуля, в которых определены переменные класса.
+
+Добавим счетщик созданных животных через переменную класса.
+
+```ruby
+class Animal
+
+  @@count_animal = 0
+
+  def initialize(age)
+    @@count_animal += 1
+    @age = age
+  end
+
+  def age=(age)
+    @age = age
+  end
+
+  def age
+    @age
+  end
+
+  def population
+    @@count_animal
+  end
+end
+
+cat = Animal.new(5)
+puts cat.population # ===> 1
+
+dog = Animal.new(10)
+puts dog.population # ===> 2
+
+puts cat.population # ===> 2
+```
+
+Теперь каждый знает сколько всего животных было создано через класс [Animal](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/class_variable_get.rb)
+
 ### class_variable_set
 ### remove_class_variable
 ## Манипулирование значениями констант, удаление констант
