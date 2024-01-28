@@ -126,11 +126,9 @@ puts animal.remove_age # ===> 15
 Как мы [видим](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/remove_instance_variable.rb) методы можно с легкостью вызывать с объекта класса или внутри класса.
 
 ### class_variable_get
-В документацию [пишут](https://apidock.com/ruby/Module/class_variable_get)
+В документации [пишут](https://apidock.com/ruby/Module/class_variable_get)
 
 > Возвращает значение заданной переменной класса (или выдает исключение NameError).
-
-Переменные класса начинаются с @@ и должны быть инициализированы до их использования в определениях методов.
 
 Ссылка на неинициализированную переменную класса вызывает ошибку. Переменные класса распределяются между потомками класса или модуля, в которых определены переменные класса.
 
@@ -160,6 +158,8 @@ class Animal
 end
 
 cat = Animal.new(5)
+puts cat.class_variable_get(:@@count_animal) # ===> undefined method `class_variable_get'
+puts Animal.class_variable_get(:@@count_animal) # ===> 1
 puts cat.population # ===> 1
 
 dog = Animal.new(10)
@@ -168,9 +168,50 @@ puts dog.population # ===> 2
 puts cat.population # ===> 2
 ```
 
-Теперь каждый знает сколько всего животных было создано через класс [Animal](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/class_variable_get.rb)
+Теперь каждый знает сколько всего животных было создано через класс [Animal](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/class_variable_get.rb). Стоит обратить внимание что метод вызывается от класса, попытка вызова данного метода от объекта приведет к ошибке метода.
 
 ### class_variable_set
+
+В документации [пишут](https://apidock.com/ruby/Module/class_variable_set)
+
+> Устанавливает переменную класса, названную символом, для данного объекта.
+
+Так же добавим счетщик созданных животных через переменную класса, но в этот раз мы его заведем через метод класса.
+
+```ruby
+class Animal
+
+  @@count_animal = 0
+
+  def initialize(age)
+    @age = age
+  end
+
+  def age=(age)
+    @age = age
+  end
+
+  def age
+    @age
+  end
+
+  def population
+    @@count_animal
+  end
+end
+
+cat = Animal.new(5)
+Animal.class_variable_set(:@@count_animal, cat.population + 1)
+puts cat.population # ===> 1
+
+dog = Animal.new(10)
+dog.class.class_variable_set(:@@count_animal, dog.population + 1)
+puts dog.population # ===> 2
+
+```
+
+Функционал [класса](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/class_variable_set.rb) остался практически таким же.
+
 ### remove_class_variable
 ## Манипулирование значениями констант, удаление констант
 ### const_get
