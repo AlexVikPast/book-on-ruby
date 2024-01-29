@@ -213,8 +213,71 @@ puts dog.population # ===> 2
 Функционал [класса](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/class_variable_set.rb) остался практически таким же.
 
 ### remove_class_variable
+
+Пришло время избавиться от [переменных класса](https://apidock.com/ruby/Module/remove_class_variable) которые мы добавили ранее.
+
+> Удаляет определение символа, возвращая значение этой константы.
+
+Функционал схож с [remove_instance_variable](https://apidock.com/ruby/Object/remove_instance_variable), только удаляет переменные класса.
+
+```RUBY
+class Animal
+  @@count_animal = 0
+
+  def initialize(age)
+    @@count_animal += 1
+    @age = age
+  end
+
+  def age=(age)
+    @age = age
+  end
+
+  def age
+    @age
+  end
+
+  def population
+    @@count_animal
+  end
+end
+
+cat = Animal.new(5)
+puts cat.population # ===> 1
+
+dog = Animal.new(10)
+puts dog.population # ===> 2
+
+Animal.remove_class_variable(:@@count_animal)
+puts cat.population # ===> `population': uninitialized class variable @@count_animal in Animal
+```
+
+После [удаления](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/remove_class_variable.rb) @@count_animal объекты класса теряют доступ к методу "population" введу отсутствия переменной класса.
+
 ## Манипулирование значениями констант, удаление констант
 ### const_get
+
+На первый взгляд [документация](https://apidock.com/ruby/Module/const_get) кажется чуть чуть запутанной и сложной. Давайте рассмотрим более простой и уже привычный пример.
+
+> Проверяет наличие константы с заданным именем в mod. Если установлено наследование, поиск также будет искать предков (и Object, если mod является Module).
+
+```RUBY
+class Animal
+  def initialize(age)
+    @age = age
+  end
+end
+
+klass_name = "animal"
+Klass = Object.const_get(klass_name.capitalize.to_sym)
+animal = Klass.new(5)
+puts animal.inspect # ===> #<Animal:0x000000014c107ed8 @age=5>
+
+Kl = Object.const_get(:Dog) # ===> `const_get': uninitialized constant Dog (NameError)
+```
+Как [видим](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/const_get.rb) мы можем "на лету" получить доступ к классу через изначально его строковое предствление.
+При попытке получить доступ несуществующему классу получим ошибку.
+
 ### const_set
 ### remove_const
 ## Добавление/удаление методов
