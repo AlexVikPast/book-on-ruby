@@ -273,12 +273,35 @@ Klass = Object.const_get(klass_name.capitalize.to_sym)
 animal = Klass.new(5)
 puts animal.inspect # ===> #<Animal:0x000000014c107ed8 @age=5>
 
-Kl = Object.const_get(:Dog) # ===> `const_get': uninitialized constant Dog (NameError)
+Dog = Object.const_get(:Dog) # ===> `const_get': uninitialized constant Dog (NameError)
 ```
 Как [видим](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/const_get.rb) мы можем "на лету" получить доступ к классу через изначально его строковое предствление.
 При попытке получить доступ несуществующему классу получим ошибку.
 
 ### const_set
+
+Как и прошлый раз [документация](https://apidock.com/ruby/Module/const_set) скудна, но есть комментарии пользователей.
+
+> Устанавливает именованную константу для данного объекта, возвращая этот объект.
+
+Чтобы константа стала самостоятельной, без привязки к каким - либо классам или модулям необходимо ее завести в module Kernel. Так как модуль Kernel включен в класс Object, поэтому его методы доступны в каждом объекте Ruby.
+
+Для [иного](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/const_set.rb) установления констант указывает к какому классу или модулю производим добавление.
+
+```RUBY
+module Animal; end
+
+Animal.const_set("COUNT_ANIMAL", 2)
+puts Animal::COUNT_ANIMAL # ===> 2
+
+class Dog; end
+Dog.const_set("AGE", 5)
+puts Dog::AGE # ===> 5
+
+Kernel.const_set("HELLO", "world")
+puts HELLO # ===> world
+```
+
 ### remove_const
 ## Добавление/удаление методов
 ### define_method
