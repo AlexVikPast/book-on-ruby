@@ -303,6 +303,35 @@ puts HELLO # ===> world
 ```
 
 ### remove_const
+
+На этот раз [документация](https://apidock.com/ruby/Module/remove_const) не содержит ни каких примеров =).
+
+> Удаляет определение данной константы, возвращая предыдущее значение этой константы.
+
+Давайте постараемся разобраться.
+
+```RUBY
+class Animal
+  AGE = 5
+  COUNT_ANIMAL = 10
+
+  def self.remove_const_call
+    remove_const(:AGE)
+  end
+end
+
+puts Animal::COUNT_ANIMAL
+Animal.send(:remove_const, :COUNT_ANIMAL)
+
+puts Animal::COUNT_ANIMAL # ===> uninitialized constant Animal::COUNT_ANIMAL
+
+puts Animal::AGE
+Animal.remove_const_call
+puts Animal::AGE # ===> uninitialized constant Animal::AGE
+```
+
+Вся ["соль"](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/remove_const.rb) вызова данного метода заключается в хитрости вызова, если вызывать его от класса, то необходимо прибегнуть к методу ["send"](#send) - но о нем мы поговорим позднее, и вызове через метода класса, с явным указание константы в качестве аргумента. 
+
 ## Добавление/удаление методов
 ### define_method
 ### remove_method
