@@ -363,6 +363,39 @@ a.my_name
 
 
 ### remove_method
+
+[Remove_method](https://apidock.com/ruby/Module/remove_method) может на лету удалить в наши классы методы.
+
+> Удаляет метод, обозначенный символом, из текущего класса.
+
+```RUBY
+class Animal
+  def hello
+    puts "I'm animal"
+  end
+end
+
+class Cat < Animal
+  def hello
+    puts "I'm cat"
+  end
+end
+
+a = Cat.new
+a.hello # ===> I'm cat
+
+Cat.remove_method :hello
+
+a.hello # ===> I'm animal
+
+Animal.remove_method :hello
+a.hello # ===> undefined method `hello' for
+```
+
+[remove_method](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/remove_method.rb) при вызове от класса, все объекты класса теряют данный метод. Тут стоит уделить особое внимание что поиск метода переходит на уровень выше и если был найден в родительском классе берет его от туда.
+
+undef_method - удаляем метод во всем дереве наследовании классов.
+
 ## Запуск динамически генерируемого кода 
 ### send
 ### instance_eval
