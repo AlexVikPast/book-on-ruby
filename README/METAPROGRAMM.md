@@ -334,6 +334,34 @@ puts Animal::AGE # ===> uninitialized constant Animal::AGE
 
 ## Добавление/удаление методов
 ### define_method
+
+[Define_method](https://apidock.com/ruby/Module/define_method) может на лету добавлять в наши классы новые методы.
+
+> Определяет метод экземпляра в получателе.
+
+```RUBY
+class Animal
+  attr_accessor :name
+
+  def initialize(name)
+    @name = name
+  end
+end
+
+Animal.define_method(:voice) { puts 'У меня появился голос' }
+Animal.define_method(:my_name) { puts send(:name) }
+
+a = Animal.new('Tom')
+a.voice
+puts a.name
+a.my_name
+```
+
+Изначально наш [класс](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/define_method.rb) только умеет только запоминать свое имя и возвращать его.
+Первый вызов define_method - на лету добавляет к классу метод с вызовом блока кода.
+Второй вызов define_method - добавляем метод alias для вызова стандартного getter метода.
+
+
 ### remove_method
 ## Запуск динамически генерируемого кода 
 ### send
