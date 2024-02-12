@@ -446,6 +446,62 @@ end
 
 
 ### module_eval
+
+[module_eval](https://apidock.com/ruby/Module/module_eval) в Ruby позволяет выполнить блок кода в контексте указанного модуля или класса. Это может быть полезно, когда вам нужно определить методы или выполнить другие действия в рамках контекста модуля или класса.
+
+```RUBY
+class Animal
+  attr_accessor :name
+
+  def initialize(name)
+    @name = name
+  end
+end
+
+Animal.module_eval do
+  def my_name
+    puts "Привет, меня зовут, #{name}."
+  end
+end
+
+animal = Animal.new("Tom")
+animal.my_name # ===> Привет, меня зовут, Tom.
+```
+
+Опять все дело в контексте выполнения [кода](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/module_eval.rb), код выполняется от объекта animal, который получил данный метод через module_eval класса Animal.
+
 ### eval
+
+[eval](https://apidock.com/ruby/Kernel/eval)
+
+> Оценивает выражения Ruby в строке.
+
+```RUBY
+eval('def say_my_name(name)
+  puts "Привет, я кот: " + name + "!"
+end')
+
+say_my_name("Tom")
+```
+
+Однако следует быть осторожным при использовании [eval](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/eval.rb), так как он может представлять потенциальную уязвимость безопасности, особенно если код выполняется из внешних источников. Рекомендуется использовать eval только при необходимости и при обработке известных и доверенных данных.
+
 ### method_missing
 
+[method_missing](https://apidock.com/ruby/BasicObject/method_missing) один из самых легких для понимания методов метапрограммирования.
+
+> Вызывается Ruby, когда obj отправляет сообщение, которое он не может обработать.
+
+```RUBY
+class Animal
+  def method_missing(method_name, *args)
+    puts "Метод #{method_name} не определен с аргументами: #{args}"
+  end
+end
+
+animal = Animal.new
+
+animal.my_name # ===> Метод my_name не определен с аргументами: []
+animal.set_name_and_age("Tome", 10) # ===> Метод set_name_and_age не определен с аргументами: ["Tome", 10]
+```
+Если метода нет, идет ["перехват"](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/method_missing.rb) нашим замечательным методом.
