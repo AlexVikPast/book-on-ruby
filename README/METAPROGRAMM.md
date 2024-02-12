@@ -472,7 +472,7 @@ animal.my_name # ===> Привет, меня зовут, Tom.
 
 ### eval
 
-[eval](https://apidock.com/ruby/Kernel/eval)
+[eval](https://apidock.com/ruby/Kernel/eval) в Ruby позволяет выполнять строку как код.
 
 > Оценивает выражения Ruby в строке.
 
