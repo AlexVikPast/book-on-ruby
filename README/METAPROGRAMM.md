@@ -398,7 +398,53 @@ undef_method - удаляем метод во всем дереве наслед
 
 ## Запуск динамически генерируемого кода 
 ### send
+
+[Send](https://apidock.com/ruby/Object/send) самый мощный, на мой взгляд, элемент метапрограммирования.
+
+> Вызывает метод, определенный символом, передавая ему все указанные аргументы.
+
+```RUBY
+class Animal
+  attr_accessor :age
+
+  def initialize(age)
+    @age = age
+  end
+end
+
+animal = Animal.new(5)
+p animal.send("age") # ===> 5
+animal.send("age=", 4) 
+
+p animal.send("age") # ===> 4
+```
+
+В данном случае при помощи [send](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/send.rb) мы реализуем getter/setter методы.
+
 ### instance_eval
+
+[instance_eval](https://apidock.com/ruby/Object/instance_eval)
+
+> Оценивает строку, содержащую исходный код Ruby или заданный блок, в контексте получателя.
+
+```RUBY
+class Animal
+  attr_accessor :name
+
+  def initialize(name)
+    @name = name
+  end
+end
+
+person = Animal.new("Tom")
+person.instance_eval do
+  puts "Привет, меня зовут #{name}!" # ===> Привет, меня зовут Tom!
+end
+```
+
+В [блоке](https://github.com/AlexVikPast/book-on-ruby/blob/main/examples/metaprogramm/instance_eval.rb) мы используем метод puts для вывода сообщения, которое включает имя объекта animal. И поскольку мы выполняем блок кода в контексте объекта animal, метод name может быть вызван без явного указания объекта.
+
+
 ### module_eval
 ### eval
 ### method_missing
